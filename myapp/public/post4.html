@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Single post</title>
+
+	<!-- font Awesome CDN link -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+	<!-- External CSS -->
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="about.css">
+	<link rel="stylesheet" href="blog.css">
+	<link rel="stylesheet" href="post1.css">
+
+	<!-- JQuery CDN link -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body>
+	<!-- Navigation start -->
+	<nav>
+		<img src="img/logo.png" class="logo" alt="">
+
+		<div class="navigation">
+			<ul>
+				<i id="menu-close" class="fas fa-times"></i>
+				<li><a href="index.html"class="active">Home</a></li>
+				<li><a href="about.html" >About Us</a></li>
+				<li><a href="events.html">Events</a></li>
+				<li><a href="alumni.html">Alumni</a></li>
+				<li><a href="donate.html">Donate</a></li>
+				<li><a href="login.html">Logout</a></li>
+			</ul>
+
+			<img src="img/menu.png" id="menu-btn" alt="">
+		</div>
+	</nav>
+	<!-- Navigation ends -->
+
+
+	<!-- Post body starts from here -->
+	<div id="blog-container">
+		<div class="blogs blogpost">
+			<div class="post">
+				<img src="img/pp4.jpeg" alt="">
+				<h3>Name: Priyanka Mishra</h3>
+				<h3>Batch: 2016-2020</h3>
+				<h3>Branch: Computer Science and engineering</h3>
+				<h3>Job Position: Engineer at Qualcomm</h3>
+				<h3>Company: Qualcomm</h3>
+				<p>
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Distinctio enim, hic vel, animi facere ipsum. Impedit provident, enim a! Porro itaque dignissimos velit natus nemo officiis culpa!
+				</p>
+
+				<p>
+					Lorem ipsum dolor sit amet consectetur adipisicing, elit. Illum magni, sint fugiat quo natus consectetur et suscipit fuga sapiente. Dolores aut praesentium quos provident in sed nobis expedita, quisquam sapiente perspiciatis cupiditate, ab, necessitatibus! Autem eveniet eos provident magni doloremque! Temporibus velit, ea suscipit tempora sint et rerum maxime est enim blanditiis perferendis natus, veritatis. Iusto, officia, doloribus. Cupiditate itaque corporis porro nisi distinctio neque ex eum tenetur quam, ut aspernatur.
+				</p>
+
+				<p>
+					Lorem ipsum dolor sit amet consectetur, adipisicing elit. Praesentium ullam cum beatae, explicabo officia eligendi doloremque in magni minima aperiam quod dolor consequatur repellendus illum possimus error sint atque magnam dolorum laboriosam reiciendis sed? Commodi eos, distinctio a. Odit laborum obcaecati voluptates, numquam culpa reiciendis, delectus voluptas officiis quod corrupti incidunt deserunt accusantium eius alias maiores ullam excepturi officia voluptatum et? Molestias labore laboriosam, est alias ab doloremque magnam vero iusto at ex odit dolores! Porro exercitationem consectetur expedita ratione magnam unde quidem reprehenderit corrupti adipisci, non, inventore dolores corporis fugit reiciendis deserunt. Quaerat dolore eveniet delectus perferendis quae veritatis illo, totam a, iste molestiae?
+				</p>
+
+				<br>
+
+				<a href="#">Read Next</a>
+			</div>
+		</div>
+	</div>
+	<!-- Post body ends from here -->
+
+
+	   <!-- Footer section starts from here -->
+	   <footer>
+		<div class="footer-col">
+			<h3>About</h3>
+			<li><a href="https://nitsikkim.ac.in/"></a>NITS Home</li>
+			<li><a href="contact.html"></a>Contact us</li>
+		</div>
+	
+		<div class="footer-col">
+			<h3>Dean's Corner</h3>
+			<li><a href="https://nitsikkim.ac.in/"></a>Academic Affairs</li>
+			<li><a href="https://nitsikkim.ac.in/institute/administration/deans.php"></a>Administration</li>
+			<li><a href="https://nitsikkim.ac.in/institute/about/campus.php"></a>Infrastructure</li>
+			<li>Resources and Alumni Affairs</li>
+		</div>
+	
+		<div class="footer-col">
+			<h3>Portals</h3>
+			<li><a href="https://kic.nitsikkim.ac.in" style="text-decoration: none ">Library</a></li>
+			<li><a href="donate.html">Donor Portal</a></li>
+			<li><a href="https://nitsikkim.ac.in/students/gallery.php"></a>Photo Upload Portal</li>
+		</div>
+	
+		<div class="copyright">
+			<p>
+				Copyright @ 2024 All rights reserved | NIT Sikkim   
+			</p>
+			<div class="pro-links">
+				<a href="https://www.facebook.com/groups/688031627916786/?mibextid=adzO7l&rdid=IOKJTCtNynPJnCn8&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2Fg%2FUGCK3wbsvfTVKGxQ%2F%3Fmibextid%3DadzO7l" target="_blank"><i class="fab fa-facebook" ></i></a>
+				<a href="https://www.instagram.com/nit__sikkim/" target="_blank"><i class="fab fa-instagram" ></i></a>
+				<a href="https://www.linkedin.com/school/national-institute-of-technology-sikkim/" target="_blank"><i class="fab fa-linkedin-in" ></i></a>
+			</div>
+		</div>
+	</footer>
+	<!-- Footer section ends from here -->
+	<script>
+		// Show menu links on burger click
+		$('#menu-btn').click(function(){
+			$('nav .navigation ul').addClass('active')
+		});
+
+		// Hide navbar on click function
+		$('#menu-close').click(function(){
+			$('nav .navigation ul').removeClass('active')
+		});
+	</script>
+</body>
+</html>

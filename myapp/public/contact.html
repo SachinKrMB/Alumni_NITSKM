@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Contact Us</title>
+
+	<!-- font Awesome CDN link -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+	<!-- External CSS -->
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="about.css">
+	<link rel="stylesheet" href="course-inner.css">
+	<link rel="stylesheet" href="contact.css">
+
+	<!-- JQuery CDN link -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body>
+	<!-- Navigation start -->
+	<nav>
+		<img src="img/logo.svg" class="logo" alt="">
+
+		<div class="navigation">
+			<ul>
+				<i id="menu-close" class="fas fa-times"></i>
+				<li><a href="index.html">Home</a></li>
+				<li><a href="about.html" >About Us</a></li>
+				<li><a href="events.html">Events</a></li>
+				<li><a href="alumni.html">Alumni</a></li>
+				<li><a href="donate.html">Donate</a></li>
+				<li><a href="#">Logout</a></li>
+			</ul>
+
+			<img src="img/menu.png" id="menu-btn" alt="">
+		</div>
+	</nav>
+	<!-- Navigation ends -->
+
+
+	<!-- Hero section starts from here -->
+	<section id="about-home">
+		<h2>
+			Contact Us
+		</h2>
+	</section>
+	<!-- Hero section ends from here -->
+
+
+	<section id="contact">
+		<div class="getin">
+			<h2>Get in touch</h2>
+			<p>Looking for help? Fill the form and start a new adventure.</p>
+
+			<div class="getin-details">
+				<h3>Location</h3>
+				<div>
+					<i class="fa-solid fa-map get"></i>
+					<p>National Institute of Technology, Sikkim
+						Barfung Block, Ravangla Sub-Division,
+						District: Namchi, Sikkim - 737 139</p>
+				</div>
+
+				<h3>Phone</h3>
+				<div>
+					<i class="fas fa-phone-alt get"></i>
+					<p>(+91) 7479013180 <br> (+91) 7865039344</p>
+				</div>
+
+				<h3>Support</h3>
+				<div>
+					<i class="fa-solid fa-envelope get"></i>
+					<p>info@nitsikkim.ac.in <br> www.nitsikkim.ac.in </p>
+				</div>
+
+				<h3>Follow Us</h3>
+				<div class="pro-links">
+					<a href="https://www.facebook.com/groups/688031627916786/?mibextid=adzO7l&rdid=IOKJTCtNynPJnCn8&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2Fg%2FUGCK3wbsvfTVKGxQ%2F%3Fmibextid%3DadzO7l" target="_blank"><i class="fab fa-facebook" ></i></a>
+					<a href="https://www.instagram.com/nit__sikkim/" target="_blank"><i class="fab fa-instagram" ></i></a>
+					<a href="https://www.linkedin.com/school/national-institute-of-technology-sikkim/" target="_blank"><i class="fab fa-linkedin-in" ></i></a>
+				</div>
+			</div>
+		</div>
+
+		<div class="form">
+			<h4>Let's Connect</h4>
+			
+			<div class="form-row">
+				<input type="text" placeholder="Your Name">
+				<input type="email" placeholder="Your Email">
+			</div>
+			<div class="form-col">
+				<input type="text" placeholder="Subject line...">
+			</div>
+			<div class="form-col">
+				<textarea name="" id="" cols="30" rows="8" placeholder="How can we help?"></textarea>
+			</div>
+
+			<div class="form-col">
+				<button>Send Message</button>
+			</div>
+		</div>
+	</section>
+
+
+	<section id="map">
+		<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3568.197046262312!2d88.35508777512878!3d27.298211377387364!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39e69b043d020435%3A0x6accf5242d3a7518!2sNational%20Institute%20Of%20Technology%20Sikkim!5e0!3m2!1sen!2sin!4v1693400143772!5m2!1sen!2sin"
+        width="600"
+        height="450"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"></iframe>
+	</section>
+
+	<script>
+		// Show menu links on burger click
+		$('#menu-btn').click(function(){
+			$('nav .navigation ul').addClass('active')
+		});
+
+		// Hide navbar on click function
+		$('#menu-close').click(function(){
+			$('nav .navigation ul').removeClass('active')
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,288 @@
+/* Global reset and font settings */
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Poppins', sans-serif;
+}
+
+/* Headings */
+h1 {
+	font-size: 2.5rem;
+	font-weight: 700;
+	color: rgb(35, 35, 85);
+}
+
+span {
+	font-size: .9rem;
+}
+
+h6 {
+	font-size: 1.1rem;
+	color: rgb(24, 24, 49);
+}
+
+/* Navigation style */
+nav {
+	position: fixed;
+	height: 7%;
+	width: 100%;
+	background: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.5vw 3vw; /* Reduced padding */
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); /* Subtle shadow */
+	backdrop-filter: blur(6px); /* Slight blur effect */
+	z-index: 1;
+	transition: background 0.3s ease; /* Smooth transition for background color */
+}
+
+nav:hover {
+	background: rgba(255, 255, 255, 1); /* Fully opaque on hover */
+}
+
+nav .logo {
+	width: 150px; /* Slightly smaller logo */
+	cursor: pointer;
+	border-radius: 7%;
+	transition: transform 0.3s ease; /* Smooth transition for logo */
+}
+
+nav .logo:hover {
+	transform: scale(1.05); /* Slightly enlarge the logo on hover */
+}
+
+nav .navigation {
+	display: flex;
+}
+
+#menu-btn, #menu-close {
+	width: 24px; /* Slightly smaller menu buttons */
+	height: 24px;
+	display: none;
+}
+
+nav .navigation ul {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	list-style: none;
+}
+
+nav .navigation ul li {
+	margin-left: 15px; /* Reduced spacing between menu items */
+}
+
+nav .navigation ul li a {
+	text-decoration: none;
+	color: rgb(21, 21, 100);
+	font-size: 14px; /* Slightly smaller font size */
+	font-weight: 500;
+	padding: 8px 12px; /* Reduced padding for links */
+	border-radius: 5px; /* Rounded corners for the links */
+	transition: color 0.3s ease, background-color 0.3s ease; /* Smooth transitions */
+}
+
+nav .navigation ul li a.active,
+nav .navigation ul li a:hover {
+	color: #fff;
+	background-color: #FDC93B; /* Yellow background on hover */
+	transform: translateY(-1px); /* Slight lift effect on hover */
+}
+#blog-container .blogpost
+{
+	width: 60%;
+	margin: auto !important;
+}
+
+#blog-container .blogpost p
+{
+	text-align: justify;
+}
+
+
+
+/*------------------------------------------------------*/
+/*------------------ For Tablet screen -----------------*/
+/*------------------------------------------------------*/
+@media screen and (max-width: 789px)
+{
+	#blog-container .blogpost
+	{
+		padding-top: 30px;
+		width: 100%;
+	}
+
+	#blog-container .blogpost img
+	{
+		width: 100%;
+		height: 50vh;
+		object-fit: cover;
+	}
+}
+
+
+
+/*------------------------------------------------------*/
+/*------------------ For Mobile screen -----------------*/
+/*------------------------------------------------------*/
+@media screen and (max-width: 475px)
+{
+	#blog-container .blogpost
+	{
+		padding-top: 70px;
+		width: 100%;
+	}
+
+	#blog-container .blogpost img
+	{
+		width: 100%;
+		height: 50vh;
+		object-fit: cover;
+	}
+}
+/*------------- Footer section styling starts ------------*/
+footer
+{
+	padding: 8vw;
+	background-color: #101c32;
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	flex-wrap: wrap;
+}
+
+footer .footer-col
+{
+	padding-bottom: 40px;
+}
+
+footer h3
+{
+	color: rgb(241, 240, 245);
+	font-weight: 600;
+	padding-bottom: 20px;
+}
+
+footer li
+{
+	list-style: none;
+	color: #7b838a;
+	padding: 10px 0;
+	font-size: 15px;
+	cursor: pointer;
+	transition: 0.3s ease;
+}
+
+footer li:hover
+{
+	color: rgb(241, 240, 245);
+}
+
+footer p
+{
+	color: #7b838a;
+}
+
+footer .subscribe
+{
+	margin-top: 20px;
+}
+
+footer input
+{
+	width: 220px;
+	padding: 15px 12px;
+	background: #334F6C;
+	border: none;
+	outline: none;
+	color: #fff;
+}
+
+footer .subscribe a
+{
+	text-decoration: none;
+	font-size: 0.9rem;
+	padding: 12px 15px;
+	background-color: #fff;
+	font-weight: 600;
+}
+
+footer .subscribe a.yellow
+{
+	color: #fff;
+	background: #fdc93b;
+	transition: 0.3s ease;
+}
+
+footer .subscribe a.yellow:hover
+{
+	color: rgb(21, 21, 100);
+	background: #fff;
+}
+
+footer .copyright
+{
+	margin-top: 20px;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+footer .copyright p, footer .copyright p > a
+{
+	color: #fff;
+	text-decoration: none;
+}
+
+footer .copyright .pro-links
+{
+	margin-top: 0px;
+}
+
+footer .copyright .pro-links i
+{
+	background-color: #5f7185;
+	color: #fff;
+}
+
+footer .copyright .pro-links i:hover
+{
+	background: #fdc93b;
+	color: #2c2c2c;
+}
+/*------------- Footer section styling ends ------------*/
+.post-buttons {
+    display: flex;
+    gap: 20px; /* Increase the gap between the buttons */
+    align-items: center;
+}
+
+.post-buttons a {
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.post-buttons a:hover {
+    background-color: #0056b3;
+}
+
+.post-buttons .edit-now {
+    background-color: #28a745;
+}
+
+.post-buttons .edit-now:hover {
+    background-color: #218838;
+}
