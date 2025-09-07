@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Profile · Alumni Connect</title>
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- fontawesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"/>
+
+  <!-- keep main style if you want (optional) -->
+  <link rel="stylesheet" href="/style.css">
+
+  <style>
+    :root{
+      --bg:#f3f6fb;
+      --card:#ffffff;
+      --muted:#6b7280;
+      --accent:#f6b72d;
+      --primary:#1f38a6;
+      --soft-shadow: 0 10px 30px rgba(18, 28, 80, 0.06);
+      --radius:14px;
+      --glass: rgba(255,255,255,0.75);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;}
+    body{
+      margin:0;
+      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:var(--bg);
+      color:#0f1724;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+
+    /* top navbar (keeps existing items visually) */
+    nav{
+      height:68px;
+      background:linear-gradient(180deg,#fff,#fbfbff);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 22px;
+      box-shadow:0 4px 18px rgba(16,24,40,0.04);
+      position:sticky;
+      top:0;
+      z-index:60;
+    }
+    nav .logo{height:44px}
+    nav .nav-links{display:flex;gap:18px;align-items:center}
+    nav a{color:#111827;text-decoration:none;font-weight:600;padding:8px 10px;border-radius:8px}
+    nav a.active{background:var(--accent); color:#0b0b0b}
+
+    .page {
+      max-width:1100px;
+      margin:28px auto;
+      padding:0 18px 60px;
+    }
+
+    /* hero area */
+    .hero {
+      background: linear-gradient(180deg, rgba(31,56,166,0.06), rgba(246,247,255,0.2));
+      border-radius:16px;
+      padding:22px;
+      display:flex;
+      gap:18px;
+      align-items:center;
+      box-shadow: var(--soft-shadow);
+    }
+    .hero-left {
+      display:flex; gap:18px; align-items:center; flex:1;
+    }
+    .hero .avatar-lg {
+      width:96px; height:96px; border-radius:18px; object-fit:cover;
+      background: linear-gradient(180deg,#fff,#f7fafc);
+      border:6px solid #fff; box-shadow:0 8px 24px rgba(31,56,166,0.06);
+    }
+    .hero h1 { margin:0; font-size:20px; font-weight:800; letter-spacing:-0.2px; }
+    .hero p { margin:6px 0 0; color:var(--muted); font-size:14px; }
+
+    .hero-right { display:flex; gap:8px; align-items:center; }
+    .btn {
+      background:var(--primary); color:#fff; padding:10px 14px; border-radius:10px; border:none; cursor:pointer; font-weight:700;
+      box-shadow: 0 6px 18px rgba(31,56,166,0.12);
+    }
+    .btn-outline {
+      background:transparent; border:1px solid rgba(15,23,36,0.06); color:var(--primary); padding:9px 12px; border-radius:10px; font-weight:600;
+    }
+
+    /* main layout */
+    .grid {
+      display:grid;
+      grid-template-columns: 2fr 1fr;
+      gap:20px;
+      margin-top:20px;
+    }
+
+    /* card look */
+    .card {
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow: var(--soft-shadow);
+    }
+
+    /* profile summary card details */
+    .profile-summary { display:flex; gap:18px; align-items:flex-start; }
+    .profile-summary .avatar-xx { width:120px; height:120px; border-radius:16px; object-fit:cover; background:#fff; border:6px solid #fff; box-shadow:0 10px 30px rgba(18,28,80,0.06); }
+    .profile-info h2 { margin:0; font-size:22px; font-weight:800; }
+    .muted { color:var(--muted); }
+    .meta { margin-top:10px; display:flex; gap:12px; flex-wrap:wrap; }
+    .chip { background:linear-gradient(180deg,#fbfcff,#f7f9ff); padding:8px 12px; border-radius:12px; font-weight:600; color:#0f1724; box-shadow:0 4px 14px rgba(31,56,166,0.04); }
+
+    /* bio */
+    .bio { margin-top:12px; color:#222; font-size:15px; }
+
+    /* edit area compact */
+    .edit-row { display:flex; gap:12px; align-items:center; }
+    .input, textarea { width:100%; padding:10px; border-radius:10px; border:1px solid #e6e9f2; background:#fbfcff; font-size:14px; }
+    textarea { min-height:120px; resize:vertical; }
+
+    /* right column */
+    aside .card { padding:16px; }
+    .stat { display:flex; gap:8px; align-items:center; justify-content:space-between; padding:10px 12px; border-radius:10px; background:linear-gradient(180deg,#fff,#fbfcff); margin-bottom:10px; }
+    .stat strong { font-size:18px; }
+    .small-muted { color:var(--muted); font-size:13px; }
+
+    /* responsive */
+    @media (max-width:920px){
+      .grid { grid-template-columns: 1fr; }
+      .hero { flex-direction:column; align-items:flex-start; }
+      .hero-right { width:100%; justify-content:flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <img src="/img/logo.png" class="logo" alt="logo">
+    <div class="nav-links">
+      <a href="/index.html">Home</a>
+      <a href="/feeds.html" >Feeds</a>
+      <a href="/about.html">About Us</a>
+      <a href="/events.html">Events</a>
+      <a href="/alumni.html">Alumni</a>
+      <a href="/donate.html">Donate</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <img id="topAvatar" src="/img/default-avatar.png" alt="avatar" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid #fff">
+      <a href="/profile" class="active" style="font-weight:700;color:#0f1724;text-decoration:none">View Profile</a>
+    </div>
+  </nav>
+
+  <main class="page">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-left">
+        <img id="heroAvatar" class="avatar-lg" src="/img/default-avatar.png" alt="avatar">
+        <div>
+          <h1 id="heroName">Your Name</h1>
+          <p id="heroRole" class="muted">Alumnus · NIT Sikkim</p>
+          <div class="meta" id="heroMeta">
+            <div class="chip" id="chipBatch">Batch: —</div>
+            <div class="chip" id="chipLocation">Location: —</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-right">
+        <button id="editToggle" class="btn">Edit Profile</button>
+        <a href="/feeds.html" class="btn-outline" title="Go to feed">View Feed</a>
+      </div>
+    </section>
+
+    <!-- Grid: main + sidebar -->
+    <div class="grid">
+      <!-- left: profile + edit form -->
+      <div>
+        <!-- profile card -->
+        <div class="card profile-summary">
+          <img id="profileAvatar" src="/img/default-avatar.png" class="avatar-xx" alt="avatar">
+          <div class="profile-info">
+            <h2 id="displayName">Your Name</h2>
+            <div class="muted" id="displayRole">Alumnus · NIT Sikkim</div>
+            <div class="meta" style="margin-top:14px">
+              <div class="small-muted">Batch: <strong id="displayBatch">—</strong></div>
+              <div class="small-muted">Location: <strong id="displayLocation">—</strong></div>
+            </div>
+
+            <div class="bio" id="displayBio">This is your bio — click Edit to update your info and avatar.</div>
+
+            <!-- small action row -->
+            <div style="margin-top:14px; display:flex; gap:10px; align-items:center;">
+              <button id="contactBtn" class="btn-outline">Contact</button>
+              <button id="shareBtn" class="btn-outline">Share Profile</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- edit area (hidden until toggled) -->
+        <div id="editArea" style="margin-top:18px; display:none;">
+          <div class="card">
+            <form id="profileForm">
+              <div style="display:flex;gap:14px;align-items:center;">
+                <img id="editAvatarPreview" src="/img/default-avatar.png" alt="preview" style="width:96px;height:96px;border-radius:12px;object-fit:cover;border:4px solid #fff;box-shadow:0 8px 22px rgba(18,28,80,0.06)">
+                <div style="flex:1">
+                  <label style="font-weight:700">Change avatar</label><br>
+                  <input id="avatarInput" type="file" accept="image/*" />
+                  <div class="small-muted" style="margin-top:6px">PNG/JPG up to 5MB</div>
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px">
+                <div>
+                  <label class="small-muted">Full name</label>
+                  <input id="nameInput" class="input" type="text" placeholder="Your full name">
+                </div>
+                <div>
+                  <label class="small-muted">Role / Position</label>
+                  <input id="roleInput" class="input" type="text" placeholder="e.g. Software Engineer at XYZ">
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+                <div>
+                  <label class="small-muted">Batch / Year</label>
+                  <input id="batchInput" class="input" type="text" placeholder="e.g. 2016 - 2020">
+                </div>
+                <div>
+                  <label class="small-muted">Location</label>
+                  <input id="locationInput" class="input" type="text" placeholder="City, Country">
+                </div>
+              </div>
+
+              <div style="margin-top:12px">
+                <label class="small-muted">Short bio</label>
+                <textarea id="bioInput" class="input" placeholder="Write a short bio..."></textarea>
+              </div>
+
+              <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+                <button type="button" id="cancelEdit" class="cancel">Cancel</button>
+                <button type="submit" class="btn">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- right: sidebar -->
+      <aside>
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div class="small-muted">Contact</div>
+              <div style="margin-top:6px"><strong id="displayEmail">you@example.com</strong></div>
+            </div>
+            <div style="text-align:right">
+              <div class="small-muted">Member since</div>
+              <div style="margin-top:6px" id="memberSince">—</div>
+            </div>
+          </div>
+
+          <div style="margin-top:16px">
+            <div class="small-muted">Quick stats</div>
+            <div style="margin-top:10px">
+              <div class="stat"><div>Posts</div><strong id="statPosts">0</strong></div>
+              <div class="stat"><div>Connections</div><strong id="statConnections">0</strong></div>
+              <div class="stat"><div>Likes</div><strong id="statLikes">0</strong></div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px; display:flex;gap:8px;">
+            <a class="btn-outline" href="/feeds.html">Go to feeds</a>
+            <button id="logoutBtn" class="btn-outline">Logout</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    // --- small UI helpers ---
+    function $(sel){return document.querySelector(sel)}
+    function escapeHtml(s){ return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+    // elements
+    const heroName = $('#heroName');
+    const heroRole = $('#heroRole');
+    const heroAvatar = $('#heroAvatar');
+    const profileAvatar = $('#profileAvatar');
+    const displayName = $('#displayName');
+    const displayRole = $('#displayRole');
+    const displayBatch = $('#displayBatch');
+    const displayLocation = $('#displayLocation');
+    const displayBio = $('#displayBio');
+    const displayEmail = $('#displayEmail');
+    const memberSince = $('#memberSince');
+    const chipBatch = $('#chipBatch');
+    const chipLocation = $('#chipLocation');
+
+    const editToggle = $('#editToggle');
+    const editArea = $('#editArea');
+    const profileForm = $('#profileForm');
+    const avatarInput = $('#avatarInput');
+    const editAvatarPreview = $('#editAvatarPreview');
+
+    const nameInput = $('#nameInput');
+    const roleInput = $('#roleInput');
+    const batchInput = $('#batchInput');
+    const locationInput = $('#locationInput');
+    const bioInput = $('#bioInput');
+
+    const statPosts = $('#statPosts');
+    const statConnections = $('#statConnections');
+    const statLikes = $('#statLikes');
+
+    // default profile (fallback)
+    let profile = {
+      name: 'Your Name',
+      role: 'Alumnus · NIT Sikkim',
+      batch: '—',
+      location: '—',
+      bio: 'This is your bio. Click Edit to change it.',
+      avatar: '/img/default-avatar.png',
+      email: 'you@example.com',
+      memberSince: '—',
+      posts: 0, connections: 0, likes: 0
+    };
+
+    function renderProfile(){
+      heroName.textContent = profile.name;
+      heroRole.textContent = profile.role;
+      heroAvatar.src = profile.avatar || '/img/default-avatar.png';
+      profileAvatar.src = profile.avatar || '/img/default-avatar.png';
+      displayName.textContent = profile.name;
+      displayRole.textContent = profile.role;
+      displayBatch.textContent = profile.batch || '—';
+      displayLocation.textContent = profile.location || '—';
+      displayBio.textContent = profile.bio || '';
+      displayEmail.textContent = profile.email || 'not set';
+      memberSince.textContent = profile.memberSince || '—';
+      chipBatch.textContent = 'Batch: ' + (profile.batch || '—');
+      chipLocation.textContent = 'Location: ' + (profile.location || '—');
+
+      statPosts.textContent = profile.posts || 0;
+      statConnections.textContent = profile.connections || 0;
+      statLikes.textContent = profile.likes || 0;
+
+      // top small avatar (nav)
+      const topAvatar = document.getElementById('topAvatar');
+      if (topAvatar) topAvatar.src = profile.avatar || '/img/default-avatar.png';
+    }
+
+    // toggle edit area
+    editToggle.addEventListener('click', () => {
+      // populate inputs
+      nameInput.value = profile.name || '';
+      roleInput.value = profile.role || '';
+      batchInput.value = profile.batch || '';
+      locationInput.value = profile.location || '';
+      bioInput.value = profile.bio || '';
+      editAvatarPreview.src = profile.avatar || '/img/default-avatar.png';
+      editArea.style.display = editArea.style.display === 'none' ? 'block' : 'none';
+      if (editArea.style.display === 'block') window.scrollTo({ top: editArea.offsetTop - 20, behavior: 'smooth' });
+    });
+
+    // preview avatar
+    avatarInput.addEventListener('change', function(){
+      const f = this.files && this.files[0];
+      if (!f) return;
+      if (!f.type.startsWith('image/')) { alert('Only images allowed'); return; }
+      if (f.size > 6 * 1024*1024) { alert('Max 6MB'); return; }
+      editAvatarPreview.src = URL.createObjectURL(f);
+    });
+
+    // cancel
+    $('#cancelEdit').addEventListener('click', () => { editArea.style.display='none'; });
+
+    // submit profile
+    profileForm.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const token = localStorage.getItem('token');
+      const fd = new FormData();
+      fd.append('name', nameInput.value.trim());
+      fd.append('role', roleInput.value.trim());
+      fd.append('batch', batchInput.value.trim());
+      fd.append('location', locationInput.value.trim());
+      fd.append('bio', bioInput.value.trim());
+      if (avatarInput.files && avatarInput.files[0]) fd.append('avatar', avatarInput.files[0]);
+
+      try {
+        const res = await fetch('/api/auth/update', {
+          method: 'POST',
+          headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+          body: fd,
+          credentials: 'include'
+        });
+        if (!res.ok) {
+          const txt = await res.text().catch(()=>null);
+          console.warn('update failed', res.status, txt);
+          // fallback: apply locally
+          profile = {
+            ...profile,
+            name: nameInput.value.trim(),
+            role: roleInput.value.trim(),
+            batch: batchInput.value.trim(),
+            location: locationInput.value.trim(),
+            bio: bioInput.value.trim(),
+            avatar: editAvatarPreview.src
+          };
+          renderProfile();
+          editArea.style.display='none';
+          alert('Profile updated locally. Server update failed or you are not logged in.');
+          return;
+        }
+        const json = await res.json();
+        // server returns profile in json.profile or json.user
+        const server = json.profile || json.user || json;
+        profile = {
+          name: server.name || server.username || profile.name,
+          role: server.role || server.currentPosition || profile.role,
+          batch: server.batch || profile.batch,
+          location: server.location || profile.location,
+          bio: server.bio || server.about || profile.bio,
+          avatar: server.avatar || server.profilePic || profile.avatar,
+          email: server.email || profile.email,
+          memberSince: server.memberSince || profile.memberSince,
+          posts: server.posts || profile.posts,
+          connections: server.connections || profile.connections,
+          likes: server.likes || profile.likes
+        };
+        if (profile.avatar && !profile.avatar.startsWith('/')) profile.avatar = profile.avatar.startsWith('http')? profile.avatar : '/' + profile.avatar;
+        renderProfile();
+        editArea.style.display='none';
+        alert('Profile saved.');
+      } catch (err) {
+        console.error('save error', err);
+        alert('Failed to save profile (check console).');
+      }
+    });
+
+    // logout neat (clears token)
+    $('#logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('token');
+      alert('Logged out locally. Refresh the page.');
+      location.reload();
+    });
+
+    // initial load: fetch from server if token exists
+    (async function loadFromServer(){
+      const token = localStorage.getItem('token');
+      if (!token) {
+        // render defaults (but try to load some public info if you want)
+        renderProfile();
+        return;
+      }
+      try {
+        const res = await fetch('/api/auth/me', {
+          method: 'GET',
+          headers: { 'Authorization': 'Bearer ' + token },
+          credentials: 'include'
+        });
+        if (!res.ok) {
+          console.warn('/api/auth/me failed', res.status);
+          renderProfile();
+          return;
+        }
+        const data = await res.json();
+        const user = data.user || data.profile || data;
+        // map server fields to our shape
+        profile = {
+          name: user.username || user.name || profile.name,
+          role: user.currentPosition || user.role || profile.role,
+          batch: user.batch || profile.batch,
+          location: user.location || profile.location,
+          bio: user.about || user.bio || profile.bio,
+          avatar: user.profilePic || user.avatar || profile.avatar,
+          email: user.email || profile.email,
+          memberSince: user.createdAt ? new Date(user.createdAt).toLocaleDateString() : (user.memberSince || profile.memberSince),
+          posts: user.postsCount || profile.posts,
+          connections: user.connectionsCount || profile.connections,
+          likes: user.likesCount || profile.likes
+        };
+        if (profile.avatar && !profile.avatar.startsWith('/')) profile.avatar = profile.avatar.startsWith('http') ? profile.avatar : '/' + profile.avatar;
+        renderProfile();
+      } catch (err) {
+        console.error('Could not load profile', err);
+        renderProfile();
+      }
+    })();
+  </script>
+</body>
+</html>

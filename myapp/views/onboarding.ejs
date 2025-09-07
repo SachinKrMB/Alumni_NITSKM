@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Onboarding</title>
+  <script defer src="/js/onboarding.js"></script>
+</head>
+<body>
+  <h1>Complete your profile</h1>
+
+  <div id="message"></div>
+
+  <div id="alumniForm" style="display:none;">
+    <h2>Alumni Onboarding</h2>
+    <form id="alumniOnboard" enctype="multipart/form-data">
+      <div>
+        <label>Current Company</label>
+        <input name="currentCompany" />
+      </div>
+      <div>
+        <label>Current Position</label>
+        <input name="currentPosition" />
+      </div>
+      <div>
+        <label>About</label>
+        <textarea name="about"></textarea>
+      </div>
+      <div>
+        <label>Profile Photo</label>
+        <input name="profilePic" type="file" accept="image/*" />
+      </div>
+      <button type="submit">Finish Onboarding</button>
+    </form>
+  </div>
+
+  <div id="studentForm" style="display:none;">
+    <h2>Student Onboarding</h2>
+    <form id="studentOnboard">
+      <div>
+        <label>Batch</label>
+        <input name="batch" placeholder="e.g., 2023" />
+      </div>
+      <div>
+        <label>Department</label>
+        <input name="department" placeholder="e.g., CSE" />
+      </div>
+      <button type="submit">Finish Onboarding</button>
+    </form>
+  </div>
+</body>
+</html>

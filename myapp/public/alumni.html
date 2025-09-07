@@ -3,7 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Education Website Template</title>
+	<title>Alumni · NIT Sikkim</title>
 
 	<!-- font Awesome CDN link -->
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
@@ -13,22 +13,99 @@
 	<link rel="stylesheet" href="alumni.css">
 
 	<!-- JQuery CDN link -->
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+	  integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+	<style>
+		/* Profile dropdown styles (small isolated rules to avoid changing your full CSS) */
+		.profile-menu { position: relative; display: inline-block; font-family: inherit; }
+		.profile-btn {
+			display:inline-flex;
+			align-items:center;
+			gap:8px;
+			background:none;
+			border:none;
+			cursor:pointer;
+			padding:6px;
+			border-radius:6px;
+			font-weight:700;
+			color:#0b1b2b;
+		}
+		#avatarContainer img { width:32px; height:32px; border-radius:8px; object-fit:cover; display:block; }
+
+		.profile-dropdown {
+			position: absolute;
+			right: 0;
+			top: calc(100% + 8px);
+			min-width: 150px;
+			background: #fff;
+			border-radius: 10px;
+			box-shadow: 0 8px 24px rgba(10,20,40,0.12);
+			padding: 6px 8px;
+			display: none;
+			z-index: 9999;
+		}
+		.profile-menu.open .profile-dropdown { display: block; }
+
+		.profile-dropdown a {
+			display:block;
+			padding:8px 10px;
+			color:#0b1b2b;
+			text-decoration:none;
+			border-radius:6px;
+			font-size:14px;
+		}
+		.profile-dropdown a:hover { background: rgba(6,24,45,0.04); }
+
+		/* small focus ring for keyboard nav */
+		.profile-btn:focus { outline: 2px solid rgba(244,180,0,0.25); outline-offset: 2px; }
+
+		/* Mobile menu fallback (if your main CSS doesn't include it) */
+		#menu-btn { display:none; cursor:pointer; }
+		#menu-close { display:none; cursor:pointer; }
+		@media(max-width:900px){
+			.navigation ul { position:fixed; left:-100%; top:0; height:100vh; width:260px; background:#fff; padding:18px; flex-direction:column; align-items:flex-start; transition:left .22s ease; z-index:200; }
+			.navigation ul.active { left:0; }
+			#menu-btn { display:inline-block; }
+			#menu-close { display:block; }
+		}
+	</style>
 </head>
 <body>
 	<!-- Navigation start -->
     <nav>
-		<img src="img/logo.png" class="logo" alt="">
+		<img src="img/logo.png" class="logo" alt="NIT Sikkim logo">
 
 		<div class="navigation">
 			<ul>
 				<i id="menu-close" class="fas fa-times"></i>
 				<li><a href="index.html">Home</a></li>
+                <li><a href="feeds.html">Feeds</a></li>
 				<li><a href="about.html" >About Us</a></li>
 				<li><a href="events.html">Events</a></li>
-				<li><a href="alumni.html"class="active">Alumni</a></li>
+				<li><a href="alumni.html" class="active">Alumni</a></li>
 				<li><a href="donate.html">Donate</a></li>
-				<li><a href="login.html">Logout</a></li>
+				
+
+				<!-- PROFILE MENU (if you prefer profile menu instead of Logout, swap these lines) -->
+				<!-- If you want both, move the profile li above and keep Logout too. -->
+				<li style="list-style:none; margin-left:12px;">
+				  <div class="profile-menu" id="profileMenu">
+				    <button class="profile-btn" id="profileBtn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="profileDropdown">
+				      <div id="avatarContainer">
+				        <!-- Avatar fallback; your JS can replace this with user image or initials -->
+				        <img src="img/default-avatar.png" alt="avatar">
+				      </div>
+				      <span id="profileName">Your Name</span>
+				    </button>
+
+				    <div class="profile-dropdown" id="profileDropdown" role="menu" aria-hidden="true">
+				      <a href="/profile" role="menuitem">View Profile</a>
+				      <a href="/settings" role="menuitem">Settings</a>
+				      <a href="login.html" role="menuitem">Logout</a>
+				    </div>
+				  </div>
+				</li>
 			</ul>
 
 			<img src="img/menu.png" id="menu-btn" alt="">
@@ -37,17 +114,17 @@
 	<!-- Navigation ends -->
 
 
-	<!-- Hero section starts from here -->
+	<!-- Hero / heading -->
 	<section id="about-home">
-		<h2>
-			Our Alumni
-		</h2>
+		<h2>Our Alumni</h2>
 	</section>
-	<!-- Hero section ends from here -->
 
+
+	<!-- Alumni grid -->
     <section id="experts">
         <h1>Our Alumni</h1>
         <p>Our alumni are a dynamic community of accomplished professionals who inspire, connect, and contribute to our legacy.</p>
+
         <div class="expert-box">
             <div class="profile" onclick="window.location.href='post1.html';" style="cursor: pointer;">
                 <img src="img/pp1.jpeg" alt="" class="circular-image">
@@ -60,7 +137,7 @@
                     <a href="https://www.linkedin.com/in/tathagat-dev-385500208/"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
-        
+
             <div class="profile" onclick="window.location.href='post2.html';" style="cursor: pointer;">
                 <img src="img/rj2.jpeg" alt="" class="circular-image">
                 <h6>Rajdeep Kumar Prasad</h6>
@@ -72,7 +149,7 @@
                     <a href="https://www.linkedin.com/in/rajdeep-kumar-prasad-b17728144?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app "><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
-        
+
             <div class="profile" onclick="window.location.href='post3.html';" style="cursor: pointer;">
                 <img src="img/pp3.jpeg" alt="" class="circular-image">
                 <h6>Puneet Ohri</h6>
@@ -84,7 +161,7 @@
                     <a href="https://www.linkedin.com/in/puneet-ohri/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
-        
+
             <div class="profile" onclick="window.location.href='post4.html';" style="cursor: pointer;">
                 <img src="img/pp4.jpeg" alt="" class="circular-image">
                 <h6>Priyanka Mishra</h6>
@@ -97,7 +174,8 @@
                 </div>
             </div>
         </div>
-        
+
+        <!-- more boxes (kept as in your original file) -->
         <div class="expert-box">
             <div class="profile" onclick="window.location.href='post5.html';" style="cursor: pointer;">
                 <img src="img/pp5.jpeg" alt="" class="circular-image">
@@ -110,7 +188,7 @@
                     <a href="https://www.linkedin.com/in/tathagat-dev-385500208/"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
-        
+
             <div class="profile" onclick="window.location.href='post6.html';" style="cursor: pointer;">
                 <img src="img/pp6.jpeg" alt="" class="circular-image">
                 <h6>Siddharth Utsav</h6>
@@ -122,7 +200,7 @@
                     <a href="https://www.linkedin.com/in/mukeshthombare/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
-        
+
             <div class="profile" onclick="window.location.href='post7.html';" style="cursor: pointer;">
                 <img src="img/pp7.jpeg" alt="" class="circular-image">
                 <h6>Aman Saurav</h6>
@@ -134,7 +212,7 @@
                     <a href="https://www.linkedin.com/in/puneet-ohri/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
-        
+
             <div class="profile" onclick="window.location.href='post8.html';" style="cursor: pointer;">
                 <img src="img/pp8.jpeg" alt="" class="circular-image">
                 <h6>Arun Tamang</h6>
@@ -147,7 +225,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="expert-box">
             <div class="profile" onclick="window.location.href='post9.html';" style="cursor: pointer;">
                 <img src="img/pp9.jpeg" alt="" class="circular-image">
@@ -160,7 +238,7 @@
                     <a href="https://www.linkedin.com/in/tathagat-dev-385500208/"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
-        
+
             <div class="profile" onclick="window.location.href='post10.html';" style="cursor: pointer;">
                 <img src="img/pp10.jpeg" alt="" class="circular-image">
                 <h6>Shambhavi Kumari</h6>
@@ -172,7 +250,7 @@
                     <a href="https://www.linkedin.com/in/mukeshthombare/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
-        
+
             <div class="profile" onclick="window.location.href='post11.html';" style="cursor: pointer;">
                 <img src="img/pp11.jpeg" alt="" class="circular-image">
                 <h6>Pragya Gupta</h6>
@@ -184,7 +262,7 @@
                     <a href="https://www.linkedin.com/in/puneet-ohri/?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
-        
+
             <div class="profile" onclick="window.location.href='post12.html';" style="cursor: pointer;">
                 <img src="img/pp12.jpeg" alt="" class="circular-image">
                 <h6>Aanchal Soni</h6>
@@ -197,7 +275,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="expert-box">
             <div class="profile" onclick="window.location.href='post13.html';" style="cursor: pointer;">
                 <img src="img/pp13.jpeg" alt="" class="circular-image">
@@ -211,8 +289,9 @@
                 </div>
             </div>
         </div>
-        
+
     </section>
+
 <!-- Footer section starts from here -->
 <footer>
     <div class="footer-col">
@@ -238,7 +317,7 @@
 
     <div class="copyright">
         <p>
-            Copyright @ 2024 All rights reserved | Alumni Connect 
+            Copyright @ 2025 All rights reserved | NITSKM Alumni Connect 
         </p>
         <div class="pro-links">
             <a href="https://www.facebook.com/groups/688031627916786/?mibextid=adzO7l&rdid=IOKJTCtNynPJnCn8&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2Fg%2FUGCK3wbsvfTVKGxQ%2F%3Fmibextid%3DadzO7l" target="_blank"><i class="fab fa-facebook" ></i></a>
@@ -249,20 +328,47 @@
 </footer>
 <!-- Footer section ends from here -->
 
-
-
-
-	
 	<script>
-		// Show menu links on burger click
-		$('#menu-btn').click(function(){
-			$('nav .navigation ul').addClass('active')
-		});
+		// Mobile menu open/close (uses jQuery as your original)
+		$('#menu-btn').click(function(){ $('.navigation ul').addClass('active') });
+		$('#menu-close').click(function(){ $('.navigation ul').removeClass('active') });
 
-		// Hide navbar on click function
-		$('#menu-close').click(function(){
-			$('nav .navigation ul').removeClass('active')
-		});
+		// Profile dropdown: open/close + accessibility
+		(function(){
+			const profileBtn = document.getElementById('profileBtn');
+			const profileMenu = document.getElementById('profileMenu');
+			const profileDropdown = document.getElementById('profileDropdown');
+
+			if (!profileBtn || !profileMenu || !profileDropdown) return;
+
+			profileBtn.addEventListener('click', function(e){
+				e.stopPropagation(); // prevent document click handler from closing immediately
+				const isOpen = profileMenu.classList.toggle('open');
+				profileBtn.setAttribute('aria-expanded', String(isOpen));
+				profileDropdown.setAttribute('aria-hidden', String(!isOpen));
+			});
+
+			// close when clicking outside
+			document.addEventListener('click', function(e){
+				if (!profileMenu.contains(e.target)) {
+					if (profileMenu.classList.contains('open')) {
+						profileMenu.classList.remove('open');
+						profileBtn.setAttribute('aria-expanded','false');
+						profileDropdown.setAttribute('aria-hidden','true');
+					}
+				}
+			});
+
+			// close on Escape
+			document.addEventListener('keydown', function(e){
+				if (e.key === 'Escape' && profileMenu.classList.contains('open')) {
+					profileMenu.classList.remove('open');
+					profileBtn.setAttribute('aria-expanded','false');
+					profileDropdown.setAttribute('aria-hidden','true');
+					profileBtn.focus();
+				}
+			});
+		})();
 	</script>
 </body>
 </html>

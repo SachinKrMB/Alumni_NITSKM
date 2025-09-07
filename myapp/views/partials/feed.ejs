@@ -1,0 +1,85 @@
+<!-- views/partials/feed.ejs -->
+<section id="feed" style="max-width:900px; margin:30px auto;">
+  <!-- Composer -->
+  <div class="composer" style="background:#fff; padding:14px; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,0.06); margin-bottom:16px;">
+    <form action="/posts" method="post" enctype="multipart/form-data">
+      <!-- If you don't have session user available on server-side, include an authorName hidden input -->
+      <!-- <input type="hidden" name="authorName" value="<%= user ? user.name : 'Anonymous' %>"> -->
+
+      <div style="display:flex; gap:12px;">
+        <img src="<%= (user && user.avatarUrl) || '/img/default-avatar.png' %>" style="width:48px;height:48px;border-radius:50%;object-fit:cover;">
+        <textarea name="content" placeholder="Share something with your alumni..." style="flex:1; min-height:70px; padding:10px; border-radius:6px;"></textarea>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
+        <div>
+          <label style="cursor:pointer; color:#444; font-size:14px;">
+            <input type="file" name="media" accept="image/*" multiple style="display:none;" id="serverFileInput">
+            + Add photo
+          </label>
+          <span id="serverAttachedCount" style="margin-left:8px; color:#666; font-size:13px;">0 attached</span>
+        </div>
+        <button type="submit" style="background:#1f2d5c; color:#fff; padding:8px 14px; border-radius:6px; border:none;">Post</button>
+      </div>
+    </form>
+
+    <div id="serverPreviewRow" style="display:flex; gap:8px; margin-top:10px; overflow:auto;"></div>
+  </div>
+
+  <!-- Posts list -->
+  <div id="postsList">
+    <% posts.forEach(function(p){ %>
+      <div class="post" style="background:#fff;padding:14px;border-radius:8px;box-shadow:0 6px 18px rgba(0,0,0,0.04);margin-bottom:14px;">
+        <div style="display:flex;gap:12px;align-items:center;">
+          <img src="<%= p.authorAvatar || '/img/default-avatar.png' %>" style="width:44px;height:44px;border-radius:50%;object-fit:cover;">
+          <div>
+            <div style="font-weight:600;"><%= p.authorName %></div>
+            <div style="font-size:12px;color:#777;"><%= new Date(p.createdAt).toLocaleString() %></div>
+          </div>
+        </div>
+
+        <div style="margin-top:10px; white-space:pre-wrap;"><%= p.content %></div>
+
+        <% if (p.media && p.media.length) { %>
+          <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:8px; margin-top:10px;">
+            <% p.media.forEach(function(m){ %>
+              <img src="<%= m.url %>" style="width:100%; height:160px; object-fit:cover; border-radius:6px;">
+            <% }) %>
+          </div>
+        <% } %>
+
+        <div style="margin-top:10px; display:flex; gap:16px; color:#444;">
+          <form action="/posts/<%= p._id %>/like" method="post" style="display:inline;">
+            <button type="submit" style="background:none;border:none;cursor:pointer;">👍 <span><%= p.likes ? p.likes.length : 0 %></span></button>
+          </form>
+          <button style="background:none;border:none;cursor:pointer;">💬 <span> <!-- comments count placeholder --> 0</span></button>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</section>
+
+<script>
+  // preview images client-side for the server composer
+  (function(){
+    const input = document.getElementById('serverFileInput');
+    const previewRow = document.getElementById('serverPreviewRow');
+    const attached = document.getElementById('serverAttachedCount');
+    if (!input) return;
+    input.addEventListener('change', function(){
+      const files = Array.from(input.files || []).slice(0,4);
+      attached.textContent = files.length + ' attached';
+      previewRow.innerHTML = '';
+      files.forEach(f => {
+        const url = URL.createObjectURL(f);
+        const img = document.createElement('img');
+        img.src = url;
+        img.style.width = '90px';
+        img.style.height = '70px';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '6px';
+        previewRow.appendChild(img);
+      });
+    });
+  })();
+</script>

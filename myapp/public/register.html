@@ -1,61 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
-    <link rel="stylesheet" href="register.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register</title>
+  <link rel="stylesheet" href="register.css" />
 </head>
 <body>
-    <!-- Navigation bar (logo in top-left corner) -->
-    <div class="logo-container">
-        <img src="img/logo.png" alt="Logo" class="logo">
-    </div>
+  <div class="logo-container">
+    <img src="img/logo.png" alt="Logo" class="logo" />
+  </div>
 
-    <div class="container">
-        <h1>Register</h1>
-        <form id="registerForm">
-            <input type="text" id="username" placeholder="Username" required>
-            <input type="email" id="email" placeholder="Email" required>
-            <input type="password" id="password" placeholder="Password" required>
-            <label for="userType">I am a:</label>
-            <select id="userType" name="userType" required>
-                <option value="" disabled selected>Select your option</option>
-                <option value="student">Student</option>
-                <option value="alumni">Alumni</option>
-            </select>
-            <button type="submit">Register</button>
-        </form>
-        <p>Already have an account? <a href="login.html">Login here</a></p>
-    </div>
+  <div class="container">
+    <h1>Register</h1>
+    <form id="registerForm">
+      <input type="text" id="username" name="username" placeholder="Username" required />
+      <input type="email" id="email" name="email" placeholder="Email" required />
+      <input type="password" id="password" name="password" placeholder="Password" required />
+      <label for="userType">I am a:</label>
+      <select id="userType" name="userType" required>
+        <option value="" disabled selected>Select your option</option>
+        <option value="student">Student</option>
+        <option value="alumni">Alumni</option>
+      </select>
 
-    <script>
-        document.getElementById('registerForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const userType = document.getElementById('userType').value;
+      <button type="submit">Register</button>
+    </form>
 
-            try {
-                const response = await fetch('http://localhost:5000/api/auth/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, email, password, userType })
-                });
+    <p>Already have an account? <a href="login.html">Login here</a></p>
+    <div id="error" style="color:crimson;margin-top:8px;"></div>
+  </div>
 
-                const result = await response.json();
-                if (response.ok) {
-                    alert('Registration successful!');
-                    window.location.href = 'login.html';
-                } else {
-                    alert('Error: ' + result.error);
-                }
-            } catch (err) {
-                console.error(err);
-                alert('An unexpected error occurred.');
-            }
-        });
-    </script>
+  <script>
+  // helper
+  async function postJson(url, data) {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json' },
+      body: JSON.stringify(data),
+      credentials: 'include'
+    });
+    const body = await res.json().catch(()=>null);
+    return { ok: res.ok, status: res.status, body };
+  }
+
+  const form = document.getElementById('registerForm');
+  const errorDiv = document.getElementById('error');
+
+  // Step UI: we'll convert form into two-step: collect email (and other fields),
+  // send OTP, then show OTP input.
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    errorDiv.textContent = '';
+
+    const username = document.getElementById('username').value.trim();
+    const email = document.getElementById('email').value.trim().toLowerCase();
+    const password = document.getElementById('password').value;
+    const userType = document.getElementById('userType').value;
+
+    if (!username || !email || !password || !userType) {
+      errorDiv.textContent = 'Please fill all fields';
+      return;
+    }
+
+    // 1) send OTP
+    const send = await postJson('/api/auth/send-otp', { email });
+    if (!send.ok) {
+      errorDiv.textContent = send.body && send.body.error ? send.body.error : 'Failed to send OTP';
+      return;
+    }
+
+    // show OTP prompt
+    showOtpPrompt({ username, email, password, userType });
+  });
+
+  function showOtpPrompt(regData) {
+    // simple prompt UI — you can replace with better modal
+    const otp = prompt('Enter the 6-digit OTP sent to your email (check spam).');
+    if (!otp) {
+      errorDiv.textContent = 'OTP required to complete signup';
+      return;
+    }
+    verifyOtp(regData, otp.trim());
+  }
+
+  async function verifyOtp(regData, otp) {
+    errorDiv.textContent = 'Verifying...';
+    const payload = {
+      email: regData.email,
+      otp,
+      username: regData.username,
+      password: regData.password,
+      userType: regData.userType
+    };
+
+    const res = await postJson('/api/auth/verify-otp', payload);
+    if (!res.ok) {
+      errorDiv.textContent = (res.body && res.body.error) || 'OTP verification failed';
+      return;
+    }
+
+    // success: server returned token and user
+    const token = res.body && res.body.token;
+    if (token) {
+      localStorage.setItem('token', token);
+      window.location.href = (res.body.redirectTo || '/onboarding');
+    } else {
+      // OTP verified but server didn't create user (if you used two-step approach)
+      errorDiv.textContent = res.body && res.body.message ? res.body.message : 'OTP verified';
+    }
+  }
+</script>
+
 </body>
 </html>

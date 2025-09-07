@@ -4,10 +4,25 @@ const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
     username: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    email:    { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    userType: { type: String, enum: ['student', 'alumni'], required: true } // Added userType field
-});
+
+    // 'student' or 'alumni'
+    userType: { type: String, enum: ['student', 'alumni'], required: true },
+
+    // Onboarding status
+    onboarded: { type: Boolean, default: false },
+
+    // Alumni-specific fields
+    currentCompany: String,
+    currentPosition: String,
+    about: String,
+    profilePic: String, // store path or URL
+
+    // Student-specific fields
+    batch: String,
+    department: String,
+}, { timestamps: true });
 
 // Method to compare passwords
 UserSchema.methods.comparePassword = function (password) {

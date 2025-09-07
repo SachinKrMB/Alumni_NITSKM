@@ -1,18 +1,14 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const PostSchema = new mongoose.Schema({
-    title: {
-        type: String,
-        required: true
-    },
-    content: {
-        type: String,
-        required: true
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
-});
+const PostSchema = new mongoose.Schema(
+  {
+    authorName: { type: String, required: true },
+    authorAvatar: { type: String, default: "/img/default-avatar.png" },
+    content: { type: String, required: true },
+    media: [{ url: String, mime: String, size: Number }],
+    likes: [String], // allow strings (userId or IP) for now
+  },
+  { timestamps: true }
+);
 
-module.exports = mongoose.model('Post', PostSchema);
+module.exports = mongoose.model("Post", PostSchema);

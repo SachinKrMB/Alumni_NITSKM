@@ -41,23 +41,23 @@ To get the Alumni Association Platform up and running, follow these steps:
 
 ## Team Members
 
-1. **Manasvi Giri**  
-   - **Roll Number**: B220054EC
+1. **Vikas Singh**  
+   - **Roll Number**: B230069EC
 
-2. **Sanjeev Kumar Singh**  
-   - **Roll Number**: B220029CS
+2. **Sachin Kumar**  
+   - **Roll Number**: B230084EE
 
-3. **Amrish Kumar**  
-   - **Roll Number**: B220003CS
+3. **Hritik Gautam**  
+   - **Roll Number**: B230052EC
 
-4. **Pathlavth Rakesh**  
-   - **Roll Number**: B220059EC
+4. **Tanisha**  
+   - **Roll Number**: B230067EC
 
-5. **Roshan Srivastav**  
-   - **Roll Number**: B220062EC
+5. **Ankhush Kumar**  
+   - **Roll Number**: B230100CE
 
-6. **Shubha Kumari**  
-   - **Roll Number**: B220093EE
+6. **Rahul Kumar Bind**  
+   - **Roll Number**: B230079EE
 
 ## License
 

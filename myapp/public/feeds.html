@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Feeds · Alumni Connect</title>
+
+  <!-- icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+  <style>
+    /* base */
+    * { box-sizing: border-box; }
+    body { margin:0; background:#f6f7fb; color:#222; font-family: Inter, system-ui, Arial, sans-serif; }
+
+    /* NAV */
+    nav {
+      width:100%;
+      background:#fff;
+      border-bottom:1px solid rgba(10,20,40,0.04);
+      padding:10px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      box-shadow:0 2px 8px rgba(10,20,40,0.03);
+      position:sticky;
+      top:0;
+      z-index:100;
+    }
+    /* LEFT: only the logo image (no extra text to avoid duplication) */
+    .nav-left { display:flex; align-items:center; gap:12px; min-width:160px; }
+    .nav-left img.logo {width:150px; display:block; }
+
+    /* CENTER links */
+    .navigation { flex:1; display:flex; justify-content:center; }
+    .navigation ul { display:flex; gap:14px; align-items:center; margin:0; padding:0; list-style:none; }
+    .navigation a { color:#0b1b2b; text-decoration:none; font-weight:600; padding:8px 12px; border-radius:8px; }
+    .navigation a.active { background:#ffd86b; color:#081022; }
+
+    /* RIGHT profile */
+    .nav-right { min-width:200px; display:flex; justify-content:flex-end; align-items:center; gap:12px; }
+    .profile-menu { position:relative; display:inline-block; font-family:inherit; }
+    .profile-btn { background:none; border:none; display:inline-flex; align-items:center; gap:8px; cursor:pointer; padding:6px; border-radius:8px; font-weight:700; color:#0b1b2b; }
+    .profile-btn img { width:32px; height:32px; border-radius:8px; object-fit:cover; }
+    .profile-dropdown {
+      position:absolute; right:0; top:calc(100% + 10px); min-width:160px;
+      background:#fff; border-radius:10px; box-shadow:0 8px 20px rgba(10,20,40,0.08);
+      padding:6px 8px; display:none; z-index:200;
+    }
+    .profile-menu.open .profile-dropdown { display:block; }
+    .profile-dropdown a { display:block; padding:8px 10px; color:#0b1b2b; text-decoration:none; border-radius:8px; font-size:14px; }
+    .profile-dropdown a:hover { background: rgba(6,24,45,0.04); }
+
+    /* MOBILE menu fallback */
+    #menu-btn { display:none; cursor:pointer; }
+    #menu-close { display:none; cursor:pointer; }
+
+    @media(max-width:900px){
+      .navigation ul { position:fixed; left:-100%; top:0; height:100vh; width:260px; background:#fff; padding:18px; flex-direction:column; align-items:flex-start; transition:left .22s ease; z-index:200; }
+      .navigation ul.active { left:0; }
+      #menu-btn { display:inline-block; }
+      #menu-close { display:block; }
+    }
+
+    /* layout */
+    .site-wrap { max-width:1100px; margin:18px auto; padding:0 18px; }
+    header .muted { color:#7b8794; font-size:13px; }
+    .grid { display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start; margin-top:12px; }
+    @media(max-width:900px){ .grid { grid-template-columns:1fr; } }
+
+    .card { background:#fff; border-radius:12px; box-shadow:0 8px 22px rgba(20,30,60,0.06); padding:14px; }
+    .muted { color:#7b8794; font-size:13px; }
+
+    /* composer */
+    .composer textarea { width:100%; min-height:100px; padding:12px; border-radius:10px; border:1px solid #e6e9ef; font-size:14px; resize:vertical; background:#fbfcff; font-family:inherit; }
+    .post-btn { background:#f4b400; color:#0f1724; border:none; padding:8px 14px; border-radius:8px; font-weight:700; cursor:pointer; box-shadow:0 6px 12px rgba(244,180,0,0.12); }
+    .attached-count { color:#8892a6; font-size:13px; margin-left:6px; }
+
+    /* posts */
+    .post { margin-bottom:16px; }
+    .post .meta { display:flex; gap:12px; align-items:center; }
+    .post .meta img { width:46px; height:46px; border-radius:8px; object-fit:cover; }
+    .post .who { font-weight:700; color:#0b1b2b; }
+    .post .time { color:#7b8794; font-size:13px; }
+    .post .content { margin-top:10px; line-height:1.5; color:#1f2a3a; }
+    .post .media { margin-top:12px; display:grid; gap:8px; grid-template-columns: repeat(2,1fr); }
+    .post .media img { width:100%; height:180px; object-fit:cover; border-radius:8px; }
+    .post.single-media .media { grid-template-columns:1fr; }
+    @media(max-width:640px){ .post .media img { height:140px; } }
+
+    .actions { display:flex; gap:14px; align-items:center; margin-top:12px; color:#42506a; font-weight:600; }
+    .actions button { background:none; border:none; cursor:pointer; display:inline-flex; gap:8px; align-items:center; color:inherit; padding:6px 8px; border-radius:8px; }
+    .actions button:hover { background: rgba(6,24,45,0.04); }
+
+    .center-muted { text-align:center; color:#8b1f1f; margin:18px 0; }
+  </style>
+</head>
+<body>
+  <!-- Nav -->
+  <nav>
+    <!-- left: only logo image (removes duplicate textual branding if the logo already contains text) -->
+    <div class="nav-left">
+      <img src="img/logo.png" class="logo" alt="NIT Sikkim logo">
+    </div>
+
+    <!-- center: links -->
+    <div class="navigation">
+      <ul>
+        <i id="menu-close" class="fas fa-times"></i>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="feeds.html" class="active">Feeds</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="alumni.html">Alumni</a></li>
+        <li><a href="donate.html">Donate</a></li>
+
+        <li style="list-style:none; margin-left:12px;">
+          <div class="profile-menu" id="profileMenu">
+            <button class="profile-btn" id="profileBtn" type="button" aria-haspopup="true" aria-expanded="false">
+              <img src="img/default-avatar.png" alt="avatar" />
+              <span id="profileName">Your Name</span>
+            </button>
+            <div class="profile-dropdown" id="profileDropdown" role="menu" aria-hidden="true">
+              <!-- If your site is static change to profile.html: href="profile.html" -->
+              <a href="/profile" role="menuitem">View Profile</a>
+              <a href="/settings" role="menuitem">Settings</a>
+              <a href="login.html" role="menuitem">Logout</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <img src="img/menu.png" id="menu-btn" alt="" style="display:none">
+    </div>
+  </nav>
+
+  <div class="site-wrap">
+    <!-- header -->
+    <header style="display:flex;justify-content:space-between;align-items:center;padding-top:6px;">
+      <div>
+        <h1 style="font-size:20px;margin:6px 0 0 0;">Feeds</h1>
+        <div class="muted" style="margin-top:6px">See what your alumni are posting — share updates, images, and memories.</div>
+      </div>
+      <div style="font-size:13px;color:#556">Logged in as <strong>Your Name</strong></div>
+    </header>
+
+    <div class="grid">
+      <!-- left column: posts -->
+      <main>
+        <div id="postsColumn">
+          <!-- posts injected here -->
+        </div>
+
+        <div id="noPosts" class="center-muted" style="display:none">No posts yet — be the first to share!</div>
+      </main>
+
+      <!-- right column: composer + profile -->
+      <aside class="sidebar">
+        <div class="card composer" id="composerCard">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <img class="avatar" src="img/default-avatar.png" alt="you" style="width:56px;height:56px;border-radius:50%;object-fit:cover;">
+            <div style="flex:1">
+              <div style="font-weight:700">You</div>
+              <div class="muted" style="font-size:13px">Share something with your alumni</div>
+            </div>
+          </div>
+
+          <div style="margin-top:12px">
+            <textarea id="postText" placeholder="Write a quick update, achievement or photo caption..."></textarea>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <label for="fileInput" style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;color:#4b5563;font-weight:700;">
+                <i class="fa-regular fa-image"></i> Add photo
+              </label>
+              <span class="attached-count" id="attachedCount">0 attached</span>
+              <input id="fileInput" type="file" multiple accept="image/*,video/*" style="display:none" />
+            </div>
+            <div>
+              <button class="post-btn" id="postBtn">Post</button>
+            </div>
+          </div>
+
+          <div id="previewRow" style="margin-top:10px;display:flex;gap:8px;overflow:auto"></div>
+        </div>
+
+        <div style="height:16px"></div>
+
+        <div class="card profile-box">
+          <img src="img/default-avatar.png" alt="avatar">
+          <div class="info">
+            <div class="name">Your Name</div>
+            <div class="muted">Alumnus · NIT Sikkim</div>
+            <div style="margin-top:8px">
+              <!-- same note: change to profile.html if appropriate -->
+              <a href="/profile" style="text-decoration:none;color:#0b1b2b;font-weight:700">View Profile</a>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:16px"></div>
+
+        <div class="card">
+          <div style="font-weight:700;margin-bottom:6px">Tips</div>
+          <div class="muted" style="font-size:13px;line-height:1.5">
+            Share updates, photos from events, job opportunities, or short stories about your journey. Keep posts friendly and professional.
+          </div>
+        </div>
+      </aside>
+    </div> <!-- grid -->
+  </div> <!-- site-wrap -->
+
+  <footer style="max-width:1100px;margin:28px auto;padding:12px 18px;color:#7b8794;font-size:13px">
+    Copyright @ 2024 All rights reserved | Alumni Connect
+  </footer>
+
+  <!-- scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+  <script>
+  // nav menu toggle + profile dropdown (improved)
+  (function(){
+    const menuBtn = document.getElementById('menu-btn');
+    const menuClose = document.getElementById('menu-close');
+    const navList = document.querySelector('.navigation ul');
+
+    // show menu icon on small screens
+    function updateMenuIcons(){
+      if (window.innerWidth <= 900) {
+        if (menuBtn) menuBtn.style.display = 'inline-block';
+        if (menuClose) menuClose.style.display = 'block';
+      } else {
+        if (menuBtn) menuBtn.style.display = 'none';
+        if (menuClose) menuClose.style.display = 'none';
+        if (navList) navList.classList.remove('active');
+      }
+    }
+    updateMenuIcons();
+    window.addEventListener('resize', updateMenuIcons);
+
+    $('#menu-btn').click(function(){ navList && navList.classList.add('active'); });
+    $('#menu-close').click(function(){ navList && navList.classList.remove('active'); });
+
+    const profileBtn = document.getElementById('profileBtn');
+    const profileMenu = document.getElementById('profileMenu');
+    const profileDropdown = document.getElementById('profileDropdown');
+    if (profileBtn && profileMenu && profileDropdown) {
+      profileBtn.addEventListener('click', function(e){
+        e.stopPropagation();
+        const isOpen = profileMenu.classList.toggle('open');
+        profileBtn.setAttribute('aria-expanded', String(isOpen));
+        profileDropdown.setAttribute('aria-hidden', String(!isOpen));
+      });
+
+      document.addEventListener('click', function(e){
+        if (!profileMenu.contains(e.target)) {
+          if (profileMenu.classList.contains('open')) {
+            profileMenu.classList.remove('open');
+            profileBtn.setAttribute('aria-expanded','false');
+            profileDropdown.setAttribute('aria-hidden','true');
+          }
+        }
+      });
+
+      document.addEventListener('keydown', function(e){
+        if (e.key === 'Escape' && profileMenu.classList.contains('open')) {
+          profileMenu.classList.remove('open');
+          profileBtn.setAttribute('aria-expanded','false');
+          profileDropdown.setAttribute('aria-hidden','true');
+          profileBtn.focus();
+        }
+      });
+    }
+  })();
+
+  // Feed logic (AJAX) - same as your original, unchanged except a small guard
+  (function(){
+    const POSTS_JSON = '/posts/json';
+    const CREATE_POST = '/posts';
+    const LIKE_POST = id => `/posts/${id}/like`;
+
+    const postsColumn = document.getElementById('postsColumn');
+    const noPosts = document.getElementById('noPosts');
+
+    const fileInput = document.getElementById('fileInput');
+    const postBtn = document.getElementById('postBtn');
+    const postText = document.getElementById('postText');
+    const previewRow = document.getElementById('previewRow');
+    const attachedCount = document.getElementById('attachedCount');
+
+    let selectedFiles = [];
+
+    function escapeHtml(unsafe) {
+      return (unsafe || '').toString()
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    function createPostElement(p) {
+      const wrapper = document.createElement('div');
+      wrapper.className = 'post card';
+      const singleMediaClass = (p.media && p.media.length === 1) ? 'single-media' : '';
+      wrapper.innerHTML = `
+        <div class="meta">
+          <img src="${p.authorAvatar || 'img/default-avatar.png'}" alt="avatar">
+          <div>
+            <div class="who">${escapeHtml(p.authorName || 'Anonymous')}</div>
+            <div class="time">${p.createdAt ? new Date(p.createdAt).toLocaleString() : ''}</div>
+          </div>
+        </div>
+        <div class="content">${escapeHtml(p.content || '')}</div>
+        ${p.media && p.media.length ? `<div class="media ${singleMediaClass}">${p.media.map(m => `<img src="${m.url}" />`).join('')}</div>` : ''}
+        <div class="actions">
+          <button class="like-btn" data-id="${p._id}">👍 <span class="like-count">${(p.likes && p.likes.length) || 0}</span></button>
+          <button class="comment-btn">💬 <span>0</span></button>
+          <button class="share-btn">🔗 Share</button>
+        </div>
+      `;
+      const likeBtn = wrapper.querySelector('.like-btn');
+      if (likeBtn) {
+        likeBtn.addEventListener('click', async function(){
+          const id = this.dataset.id;
+          try {
+            const res = await fetch(LIKE_POST(id), { method: 'POST', credentials: 'include' });
+            if (res.status === 401) { alert('Please log in to like posts.'); return; }
+            const json = await res.json();
+            if (json && typeof json.likes !== 'undefined') this.querySelector('.like-count').textContent = json.likes;
+          } catch (err) {
+            console.error('like error', err);
+            alert('Could not like.');
+          }
+        });
+      }
+
+      return wrapper;
+    }
+
+    async function fetchPosts() {
+      try {
+        postsColumn.innerHTML = '<div class="card muted">Loading posts…</div>';
+        const res = await fetch(POSTS_JSON, { credentials: 'include' });
+        if (!res.ok) throw new Error('Failed to fetch posts');
+        const posts = await res.json();
+        postsColumn.innerHTML = '';
+        if (!posts || posts.length === 0) {
+          noPosts.style.display = 'block';
+          return;
+        }
+        noPosts.style.display = 'none';
+        posts.forEach(p => postsColumn.appendChild(createPostElement(p)));
+      } catch (err) {
+        console.error('fetchPosts error', err);
+        postsColumn.innerHTML = '<div class="center-muted">Failed to load posts.</div>';
+      }
+    }
+
+    // file preview
+    if (fileInput) {
+      fileInput.addEventListener('change', function(e){
+        selectedFiles = Array.from(e.target.files).slice(0,4);
+        attachedCount.textContent = selectedFiles.length + ' attached';
+        previewRow.innerHTML = '';
+        selectedFiles.forEach(f => {
+          const url = URL.createObjectURL(f);
+          const thumb = document.createElement('div');
+          thumb.style = 'width:80px;height:64px;border-radius:8px;overflow:hidden;background:#f2f4f7;display:flex;align-items:center;justify-content:center';
+          if (f.type.startsWith('image/')) {
+            const img = document.createElement('img');
+            img.src = url; img.style.width='100%'; img.style.height='100%'; img.style.objectFit='cover';
+            thumb.appendChild(img);
+          } else {
+            thumb.textContent = f.name;
+          }
+          previewRow.appendChild(thumb);
+        });
+      });
+    }
+
+    // submit
+    if (postBtn) {
+      postBtn.addEventListener('click', async function(e){
+        e.preventDefault();
+        const text = postText.value.trim();
+        if (!text && selectedFiles.length === 0) { alert('Write something or attach a photo.'); return; }
+
+        postBtn.disabled = true; postBtn.textContent = 'Posting...';
+
+        try {
+          const form = new FormData();
+          form.append('content', text);
+          selectedFiles.forEach(f => form.append('media', f, f.name));
+
+          const res = await fetch(CREATE_POST, { method:'POST', body: form, credentials:'include' });
+
+          if (!res.ok && res.status !== 302) throw new Error('Failed to create post');
+
+          // reset UI
+          postText.value = ''; selectedFiles = []; fileInput.value = ''; attachedCount.textContent = '0 attached'; previewRow.innerHTML = '';
+
+          await fetchPosts();
+        } catch (err) {
+          console.error('create post error', err);
+          alert('Could not create post.');
+        } finally {
+          postBtn.disabled = false; postBtn.textContent = 'Post';
+        }
+      });
+    }
+
+    // initial load
+    fetchPosts();
+  })();
+  </script>
+</body>
+</html>

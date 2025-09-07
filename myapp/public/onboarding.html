@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Onboarding</title>
+  <link rel="stylesheet" href="register.css" />
+</head>
+<body>
+  <div class="logo-container"><img src="img/logo.png" class="logo" alt="Logo" /></div>
+
+  <div class="container">
+    <h1>Complete your profile</h1>
+    <div id="message" style="color: #333;"></div>
+
+    <!-- Alumni form (multipart/form-data for image) -->
+    <form id="alumniForm" style="display:none;" enctype="multipart/form-data">
+      <input name="currentCompany" placeholder="Current Company" />
+      <input name="currentPosition" placeholder="Current Position" />
+      <textarea name="about" placeholder="About you"></textarea>
+      <label>Profile Photo (optional)</label>
+      <input type="file" name="profilePic" accept="image/*" />
+      <button type="submit">Finish</button>
+    </form>
+
+    <!-- Student form -->
+    <form id="studentForm" style="display:none;">
+      <input name="batch" placeholder="Batch (e.g., 2023)" />
+      <input name="department" placeholder="Department (e.g., CSE)" />
+      <button type="submit">Finish</button>
+    </form>
+
+    <div id="error" style="color:crimson;margin-top:8px;"></div>
+  </div>
+
+  <script>
+    // Helper: get token from localStorage and add auth header
+    function authHeaders(extra = {}) {
+      const token = localStorage.getItem('token');
+      const headers = Object.assign({}, extra);
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+      return headers;
+    }
+
+    async function apiGet(path) {
+      const res = await fetch(path, { headers: authHeaders() });
+      return res;
+    }
+
+    async function apiPostForm(path, formData) {
+      const res = await fetch(path, {
+        method: 'POST',
+        headers: { 'Authorization': authHeaders().Authorization },
+        body: formData
+      });
+      return res;
+    }
+
+    async function apiPostJson(path, data) {
+      const res = await fetch(path, {
+        method: 'POST',
+        headers: Object.assign({ 'Content-Type': 'application/json' }, authHeaders()),
+        body: JSON.stringify(data)
+      });
+      return res;
+    }
+
+    async function init() {
+      const message = document.getElementById('message');
+      const errBox = document.getElementById('error');
+      const alumniForm = document.getElementById('alumniForm');
+      const studentForm = document.getElementById('studentForm');
+
+      // Get current user to detect role
+      try {
+        const meResp = await apiGet('/api/auth/me');
+        const meData = await meResp.json();
+        if (!meResp.ok) {
+          // not logged in or token invalid
+          window.location.href = 'login.html';
+          return;
+        }
+        const user = meData.user;
+        if (!user) { window.location.href = 'login.html'; return; }
+        if (user.onboarded) {
+          message.textContent = 'Profile already completed — redirecting...';
+          setTimeout(() => window.location.href = 'profile.html', 1000);
+          return;
+        }
+
+        if (user.userType === 'alumni') {
+          alumniForm.style.display = 'block';
+        } else {
+          studentForm.style.display = 'block';
+        }
+
+        // alumni submit (file)
+        alumniForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          errBox.textContent = '';
+          const fd = new FormData(alumniForm);
+          try {
+            const resp = await apiPostForm('/api/auth/onboarding', fd);
+            const json = await resp.json();
+            if (resp.ok) {
+              window.location.href = json.redirectTo || 'profile.html';
+            } else {
+              errBox.textContent = json.error || 'Onboarding failed';
+            }
+          } catch (err) {
+            console.error(err);
+            errBox.textContent = 'Network or server error';
+          }
+        });
+
+        // student submit (json)
+        studentForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          errBox.textContent = '';
+          const formData = new FormData(studentForm);
+          const data = Object.fromEntries(formData.entries());
+          try {
+            const resp = await apiPostJson('/api/auth/onboarding', data);
+            const json = await resp.json();
+            if (resp.ok) {
+              window.location.href = json.redirectTo || 'profile.html';
+            } else {
+              errBox.textContent = json.error || 'Onboarding failed';
+            }
+          } catch (err) {
+            console.error(err);
+            errBox.textContent = 'Network or server error';
+          }
+        });
+
+      } catch (err) {
+        console.error(err);
+        window.location.href = 'login.html';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
