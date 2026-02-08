@@ -41,23 +41,11 @@ To get the Alumni Association Platform up and running, follow these steps:
 
 ## Team Members
 
-1. **Vikas Singh**  
-   - **Roll Number**: B230069EC
+1. **Prashant Kumar**  
+   - **Roll Number**: B230017CS
 
 2. **Sachin Kumar**  
    - **Roll Number**: B230084EE
-
-3. **Hritik Gautam**  
-   - **Roll Number**: B230052EC
-
-4. **Tanisha**  
-   - **Roll Number**: B230067EC
-
-5. **Ankhush Kumar**  
-   - **Roll Number**: B230100CE
-
-6. **Rahul Kumar Bind**  
-   - **Roll Number**: B230079EE
 
 ## License
 
@@ -67,4 +55,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 - Special thanks to our university's alumni association for their guidance and support.
 - Open-source libraries and tools that made this project possible.
+
 
